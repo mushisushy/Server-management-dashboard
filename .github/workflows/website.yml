@@ -24,6 +24,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
 
+    - name: Set PYTHONPATH
+      run: echo "PYTHONPATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+
     - name: Run Pytest for selected test files
       run: |
         pytest tests/test_delete_fn.py tests/test_user_expiration.py
