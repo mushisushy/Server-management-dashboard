@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <a href="/login">
+            <img class="rounded" src="../static/profile.jpg" alt="login or sign up" style="float:right" />
+        </a>
+        <h1 style=" text-align:center">Server Management</h1>
+    </div>
+    {% for server in servers %}
+    <div class="container">
+        <div class="server">
+            <strong title=" info about server">Server {{server.name}} </strong>
+            <div class="status"> <pre>Status :  </pre>
+            {% if server.status == 'live': %}
+            <div class="live"> <pre>Live  </pre> </div>
+            <div class="down"> <del>Down </del> </div>
+            {% else: %}
+            <div class="live"> <del><pre>Live  </pre> </del> </div>
+            <div class="down"> Down  </div>
+            {% endif %}
+            </div>
+            <div class="list">
+                <a href="/users/{{ server.name }}"> <button> List of Users </button> </a>
+                <a href="/groups/{{ server.name }}"> <button> List of Groups </button> </a>
+            </div>
+            <br />
+            <br />
+        </div>
+        <div> <p> Here will be some info about the server. </p> </div>
+    </div>
+    {% endfor %}
+{% endblock content %}

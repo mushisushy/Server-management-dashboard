@@ -1,0 +1,450 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container user-list">
+  <div>
+    <div style="float: left;">
+      <h1>User List on {{ server_name }}</h1>
+    </div>
+    <div class="search-container">
+      <form action="javascript:void(0);" method="GET" class="search-box" onsubmit="handleSearch()">
+        <input type="text" name="query" placeholder="Search..." class="search-input" id="searchQuery">
+        <button type="submit" class="search-icon" style="background-color: transparent;">
+          <img src="../../static/search.png" alt="Search" class="search-icon">
+        </button>
+      </form>
+    </div>
+  </div>
+  <div>
+    <div style="float:right; margin-bottom: 10px;">
+    <!-- Main content goes here -->
+    <button onclick="openModal()" class="filter_button"><img class="filter" src="../../static/filter.png" alt="filter" /></button>
+    </div>
+    <a href="{{ url_for('main_page.add_users_to_group', server_name=server_name, group_id=group_id) }}">
+    <button class="create-user" id="addUserBtn">Add User</button>
+
+    </a>
+
+<!-- Modal Structure -->
+<div id="filterModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h1>Filters</h1>
+        <form id="filterForm" onsubmit="handleFilterSubmit(event)">
+            <label for="sudo">Sudo Access</label>
+            <input type="checkbox" id="sudo" name="sudo" >
+
+            <label for="docker">Docker Access</label>
+            <input type="checkbox" id="docker" name="docker" >
+
+            <label for="folder">Home Folder</label>
+            <input type="checkbox" id="folder" name="home_folder" >
+
+            <button type="submit">Apply Filters</button>
+        </form>
+    </div>
+</div>
+
+<!-- JavaScript code for modal functionality -->
+<script>
+    function openModal() {
+        document.getElementById("filterModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("filterModal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById("filterModal");
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+</script>
+<script>
+  function handleFilterSubmit(event) {
+  event.preventDefault(); // Prevent the form from reloading the page
+  applyFilters(); // Apply the filters
+  closeModal(); // Optionally close the modal after applying filters
+}
+
+function applyFilters() {
+  const table = document.getElementById("userTable");
+  const rows = Array.from(table.tBodies[0].rows);
+
+  // Get filter states
+  const sudoFilter = document.getElementById("sudo").checked;
+  const dockerFilter = document.getElementById("docker").checked;
+  const folderFilter = document.getElementById("folder").checked;
+
+  rows.forEach(row => {
+    // Extract values from the row
+    const hasSudo = row.cells[1].childNodes[0]?.nodeValue.trim() === "Yes";
+    const hasDocker = row.cells[2].childNodes[0]?.nodeValue.trim() === "Yes";
+    const hasHomeFolder = row.cells[3].textContent.trim() !== "-";
+
+    // Determine if the row matches the filters
+    const matchesSudo = !sudoFilter || hasSudo;
+    const matchesDocker = !dockerFilter || hasDocker;
+    const matchesFolder = !folderFilter || hasHomeFolder;
+
+    // Show or hide the row
+    row.style.display = matchesSudo && matchesDocker && matchesFolder ? "" : "none";
+  });
+}
+
+function closeModal() {
+  document.getElementById("filterModal").style.display = "none";
+}
+</script>
+  </div>
+
+  <script>
+      function openModal() {
+        document.getElementById("filterModal").style.display = "block";
+      }
+
+      function closeModal() {
+        document.getElementById("filterModal").style.display = "none";
+      }
+      window.onclick = function(event) {
+        const modal = document.getElementById("filterModal");
+        if (event.target == modal) {
+          closeModal();
+        }
+      }
+    </script>
+
+  <div>
+  <table id="userTable">
+    <thead>
+      <tr>
+        <th class="name-col">
+          Name
+          <button class = "triangle" onclick="sortTable('name')">
+            <img src="../../static/triangle.png" alt="sort" style="width:20px; height:20px">
+          </button>
+        </th>
+        <th class="sudo-col">
+          Sudo
+          <button class = "triangle" onclick="sortTable('sudo')">
+            <img src="../../static/triangle.png" alt="sort" style="width:20px; height:20px">
+          </button>
+        </th>
+        <th class="docker-col">
+          Docker
+          <button class = "triangle" onclick="sortTable('docker')">
+            <img src="../../static/triangle.png" alt="sort" style="width:20px; height:20px">
+          </button>
+        </th>
+        <th class="space-col">
+          Home Folder Space
+          <button class = "triangle" onclick="sortTable('space')">
+            <img src="../../static/triangle.png" alt="sort" style="width:20px; height:20px">
+          </button>
+        </th>
+        <th class="reg-date-col">
+          Registration Date
+          <button class = "triangle" onclick="sortTable('reg-date')">
+            <img src="../../static/triangle.png" alt="sort" style="width:20px; height:20px">
+          </button>
+        </th>
+        <th class="exp-date-col">
+          Access Expiration
+          <button class = "triangle" onclick="sortTable('exp-date')">
+            <img src="../../static/triangle.png" alt="sort" style="width:20px; height:20px">
+          </button>
+        </th>
+        <th class="actions-col">Actions</th>
+      </tr>
+    </thead>
+      <tbody id="userTableBody">
+        {% for user in users %}
+          <tr class="user-row">
+            <td>{{ user.username }}</td>
+            <td>{% if user.sudo: %} Yes
+              <button onclick="toggleSudo({{ user.id }}, false)"> Remove Sudo </button>
+              {% else %} No
+              <button onclick="toggleSudo({{ user.id }}, true)"> Add Sudo </button>
+              {% endif %} </td>
+            <td>{% if user.docker: %} Yes
+              <button onclick="toggleDocker({{ user.id }}, false)"> Remove Docker </button>
+              {% else %} No
+              <button onclick="toggleDocker({{ user.id }}, true)"> Add Docker </button>
+              {% endif %} </td>
+            <td>{{ user.home_size or '-' }}</td>
+            <td>{{ user.registration_date or '-' }}</td>
+            <td>{{ user.expire_date or '-' }}
+                <a href="{{ url_for('main_page.change_expiration', user_id=user.id, server_name=server_name) }}">
+                        <button>Change Expiration Date</button>
+                </a>
+            </td>
+            <td>
+                <form action="{{ url_for('main_page.delete_user_route', user_id=user.id, server_name=server_name) }}" method="GET" style="display:inline;">
+                        <button class="table button" type="submit">Delete</button>
+                </form>
+                <button onclick="openPasswordModal({{ user.id }})" >Change Password</button> </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- Password Change Modal -->
+<div id="passwordModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closePasswordModal()">&times;</span>
+    <h2>Change Password</h2>
+    <form id="passwordForm">
+      <input type="hidden" id="passwordUserId">
+      <label for="new_password">New Password</label>
+      <input type="password" id="new_password" required>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function openPasswordModal(userId) {
+    document.getElementById("passwordUserId").value = userId;
+    document.getElementById("passwordModal").style.display = "block";
+}
+
+function closePasswordModal() {
+    document.getElementById("passwordModal").style.display = "none";
+}
+
+document.getElementById("passwordForm").onsubmit = function (event) {
+    event.preventDefault();
+
+    const userId = document.getElementById("passwordUserId").value;
+    const newPassword = document.getElementById("new_password").value;
+
+    fetch(`/change_password/${userId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+            new_password: newPassword,
+        }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        alert(data.message);
+        closePasswordModal();
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+        alert("Failed to update password.");
+    });
+};
+
+</script>
+
+<script>
+  function sortTable(column) {
+    const table = document.getElementById("userTable");
+    const rows = Array.from(table.tBodies[0].rows);
+    let sortOrder = table.dataset.sortOrder === "asc" ? "desc" : "asc";
+
+    const getColumnValue = (row) => {
+      switch (column) {
+        case "name":
+          return row.cells[0].textContent.toLowerCase();
+        case "sudo":
+          return row.cells[column === "sudo" ? 1 : 2].childNodes[0]?.nodeValue.trim() === "Yes";
+        case "docker":
+          return row.cells[column === "docker" ? 1 : 2].childNodes[0]?.nodeValue.trim() === "Yes";
+        case "space":
+          return parseFloat(row.cells[3].textContent) || 0;
+        case "reg-date":
+          return new Date(row.cells[4].textContent);
+        case "exp-date":
+          const expDateText = row.cells[5].childNodes[0]?.nodeValue.trim();
+          return expDateText === '-' ? Infinity : new Date(expDateText);
+        default:
+          return row.cells[0].textContent.toLowerCase();
+      }
+    };
+
+    rows.sort((a, b) => {
+      const valueA = getColumnValue(a);
+      const valueB = getColumnValue(b);
+
+      if (valueA > valueB) return sortOrder === "asc" ? 1 : -1;
+      if (valueA < valueB) return sortOrder === "asc" ? -1 : 1;
+      return 0;
+    });
+
+    table.tBodies[0].append(...rows);
+    table.dataset.sortOrder = sortOrder;
+  }
+</script>
+
+<script>
+  const url = `/select_users/${server_name}/${group_id}`;
+
+  const server_name = "{{ server_name }}";
+  const group_id = "{{ group_id }}";
+
+</script>
+
+<script>
+  function toggleSudo(userId, addSudo) {
+  const url = `/toggle_sudo/${userId}`;
+
+  fetch(url, {
+    method: "POST",
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        return response.json().then((data) => {
+          throw new Error(data.error || "Failed to toggle sudo status.");
+        });
+      }
+    })
+    .then((data) => {
+      alert(data.message);
+
+      // Optionally reload the page or update the UI dynamically
+      location.reload();
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("An error occurred: " + error.message);
+    });
+}
+
+</script>
+
+<script>
+  function toggleSudo(userId, addSudo) {
+  const url = `/toggle_sudo/${userId}`;
+
+  fetch(url, {
+    method: "POST",
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        return response.json().then((data) => {
+          throw new Error(data.error || "Failed to toggle sudo status.");
+        });
+      }
+    })
+    .then((data) => {
+      alert(data.message);
+
+      // Update the UI dynamically
+      const button = document.querySelector(`button[onclick="toggleSudo(${userId}, ${addSudo})"]`);
+      const statusCell = button.parentElement;
+
+      if (data.sudo) {
+        statusCell.innerHTML = 'Yes <button onclick="toggleSudo(' + userId + ', false)">Remove Sudo</button>';
+      } else {
+        statusCell.innerHTML = 'No <button onclick="toggleSudo(' + userId + ', true)">Add Sudo</button>';
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("An error occurred: " + error.message);
+    });
+}
+
+</script>
+
+<script>
+  function toggleDocker(userId, addDocker) {
+  const url = `/toggle_docker/${userId}`;
+
+  fetch(url, {
+    method: "POST",
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        return response.json().then((data) => {
+          throw new Error(data.error || "Failed to toggle docker status.");
+        });
+      }
+    })
+    .then((data) => {
+      alert(data.message);
+
+      // Optionally reload the page or update the UI dynamically
+      location.reload();
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("An error occurred: " + error.message);
+    });
+}
+
+  function toggleDocker(userId, addDocker) {
+  const url = `/toggle_docker/${userId}`;
+
+  fetch(url, {
+    method: "POST",
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        return response.json().then((data) => {
+          throw new Error(data.error || "Failed to toggle docker status.");
+        });
+      }
+    })
+    .then((data) => {
+      alert(data.message);
+
+      // Update the UI dynamically
+      const button = document.querySelector(`button[onclick="toggleDocker(${userId}, ${addDocker})"]`);
+      const statusCell = button.parentElement;
+
+      if (data.docker) {
+        statusCell.innerHTML = 'Yes <button onclick="toggleDocker(' + userId + ', false)">Remove Docker</button>';
+      } else {
+        statusCell.innerHTML = 'No <button onclick="toggleDocker(' + userId + ', true)">Add Docker</button>';
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("An error occurred: " + error.message);
+    });
+}
+
+</script>
+
+<script>
+function handleSearch() {
+    const query = document.getElementById("searchQuery").value.toLowerCase();
+    const rows = document.querySelectorAll("#userTableBody .user-row");
+
+    rows.forEach(row => {
+      const username = row.cells[0].textContent.toLowerCase();
+      const sudo = row.cells[1].textContent.toLowerCase();
+      const docker = row.cells[2].textContent.toLowerCase();
+      const homeSize = row.cells[3].textContent.toLowerCase();
+      const regDate = row.cells[4].textContent.toLowerCase();
+      const expDate = row.cells[5].textContent.toLowerCase();
+
+      const matchesSearch = username.includes(query) ||
+        sudo.includes(query) ||
+        docker.includes(query) ||
+        homeSize.includes(query) ||
+        regDate.includes(query) ||
+        expDate.includes(query);
+
+      row.style.display = matchesSearch ? "" : "none";
+    });
+  }
+</script>
+{% endblock content %}

@@ -1,0 +1,391 @@
+/* General Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Body Styling */
+body {
+    background-color: #8769ac;
+    padding: 20px;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Container Styling */
+.container {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(135, 105, 172, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(135, 105, 172, 0.3);
+}
+
+/* Header and Titles */
+h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #000; /* Black */
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+/* Status Styling */
+.status {
+    font-weight: bold;
+    margin-right: 10px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.status .live, .status .down {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: white;
+}
+
+.status .live {
+    background-color: #28a745; /* Green */
+}
+
+.status .down {
+    background-color: rgba(139, 0, 0, 0.3); /* Faded Red */
+    color: rgba(139, 0, 0, 0.8); /* Semi-Transparent Text */
+}
+
+/* Button Styling */
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #28a745;
+    color: white;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #70ac;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Image Styling */
+img.rounded {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+
+/* Server List Links */
+.list {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.list a {
+    text-decoration: none;
+}
+
+.list button {
+    padding: 10px 15px;
+}
+
+.list  button {
+    background-color: white; /* White background */
+    color: #70ac; /* Current purple text color */
+    border: 2px solid #70ac; /* Border with current color */
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, transform 0.2s;
+}
+
+.list button:hover {
+    background-color: #70ac; /* Purple background on hover */
+    color: white; /* White text on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+table  button,  table form button{
+    background-color: white; /* White background */
+    color: #70ac; /* Current purple text color */
+    border: 2px solid #70ac; /* Border with current color */
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, transform 0.2s;
+}
+
+table button:hover {
+    background-color: #70ac; /* Purple background on hover */
+    color: white; /* White text on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+form label {
+    font-weight: bold;
+}
+
+form input[type="text"], form input[type="password"], form input[type="date"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+form button {
+    align-self: flex-start;
+    background-color: #28a745;
+}
+
+form button:hover {
+    background-color: #218838;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+thead {
+    background-color: #8769ac; /* Purple */
+    color: white;
+}
+
+/* Modal Styling */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    button {
+        padding: 10px 15px;
+    }
+
+    img.rounded {
+        width: 50px;
+        height: 50px;
+    }
+
+    form input[type="text"], form input[type="password"], form input[type="date"] {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+}
+
+.rounded {
+    width: 60px;
+    height: 60px;
+    border-radius: 50% !important;
+    object-fit: cover;
+    object-position: top;
+}
+
+
+.search-container {
+     float: right;
+}
+
+.search-box {
+     position: relative;
+     width: 400px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 40px 8px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+}
+
+.search-icon {
+    position: absolute;
+    top: 10%;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    border-radius: 30%;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+.filter_button{
+    padding: 6px 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #8769ac; /* Purple */
+    color: white;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.filter_button:hover {
+    background-color: #70ac;
+    transform: translateY(-2px);
+}
+
+.filter_button:active {
+    transform: scale(0.98);
+}
+
+.filter {
+    float : right;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    object-position: top;
+    background_color: #8769ac;
+}
+
+
+.container.user-list > div {
+  display: block;
+  width: 100%;
+  clear: both;
+  margin-bottom: 20px;
+  transition: 0px;
+}
+
+
+/* Modal background overlay */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+}
+
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 400px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/* Close button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.triangle{
+    width: 20px;
+    height: 20px;
+    background-color: #8769ac;
+    border : 0px;
+    margin: 0px;
+    padding: 0px;
+    float: right;
+}
+
+.name-col { width: 10%; }
+.sudo-col, .docker-col, .space-col, .reg-date-col, .exp-date-col { width: 16%; }
+.actions-col { width: 10%; }
+
+table th:first-child, table td:first-child {
+  width: 5%;
+  text-align: center;
+}
+
+
+
+

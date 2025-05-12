@@ -1,0 +1,14 @@
+<!-- website/templates/change_expiration.html -->
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Change Expiration Date for User on {{ server_name }}</h2>
+
+    <form method="POST">
+        <label for="expiration_date">New Expiration Date:</label>
+        <input type="date" id="expiration_date" name="expiration_date" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <a href="{{ url_for('main_page.list_users', server_name=server_name) }}">Back to Users List</a>
+{% endblock %}

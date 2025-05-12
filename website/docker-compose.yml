@@ -1,0 +1,38 @@
+services:
+  app:
+    build: .
+    container_name: my-python-app
+    ports:
+      - "5000:5000"
+    environment:
+      - ENV=production
+      - DOCKER_ENV=true
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=my-secret-pw
+      - DB_NAME=mydatabase
+    depends_on:
+      db:
+        condition: service_healthy
+    command: python main.py
+
+  db:
+    image: mysql:8.0
+    container_name: my-mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  mysql_data:

@@ -1,0 +1,37 @@
+# website-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: website
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: website
+  template:
+    metadata:
+      labels:
+        app: website
+    spec:
+
+      containers:
+        - name: website
+          image: website:latest
+          imagePullPolicy: Never
+          env:
+            - name: ENV
+              value: production
+            - name: DOCKER_ENV
+              value: "true"
+            - name: DB_HOST
+              value: mysql
+            - name: DB_USER
+              value: root
+            - name: DB_PASSWORD
+              value: my-secret-pw
+            - name: DB_NAME
+              value: mydatabase
+          ports:
+            - name: http
+              containerPort: 5000
+

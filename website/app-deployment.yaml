@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-app
+  template:
+    metadata:
+      labels:
+        app: python-app
+    spec:
+      containers:
+        - name: python-app
+          image: python-app:latest
+          imagePullPolicy: Never
+          command: [ "python", "main.py" ]
+          env:
+            - name: ENV
+              value: production
+            - name: DOCKER_ENV
+              value: "true"
+            - name: DB_HOST
+              value: mysql
+            - name: DB_USER
+              value: root
+            - name: DB_PASSWORD
+              value: my-secret-pw
+            - name: DB_NAME
+              value: mydatabase
+          ports:
+            - name: http
+              containerPort: 5000
+       	      resources:
+                limits:
+                  cpu: 500m
+                requests:
+                  cpu: 200m
+

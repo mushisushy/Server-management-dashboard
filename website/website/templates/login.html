@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <div class="container">
+        <h1>Login</h1>
+        <form method="POST">
+            <label for="username">UserName</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+            <div>
+                <a href="../signup">
+                    <button type="button" style="float:left;">sign up</button>
+                </a>
+                <button type="submit" style="float:left;"> login </button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

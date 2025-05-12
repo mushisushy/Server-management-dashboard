@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container group-list">
+    <h2>Groups on {{ server_name }}</h2>
+    <button onclick="openModal()" class="create-user">Create Group</button>
+
+    <!-- Modal Structure -->
+    <div id="filterModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h1>ADD GROUP</h1>
+            <form action="{{ url_for('main_page.add_group', server_name=server_name) }}" method="POST" onsubmit="return closeModal()">
+                <label for="group_name">Group Name</label>
+                <input type="text" id="group_name" name="group_name" required>
+                <button type="submit">Add</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript code for modal functionality -->
+    <script>
+        function openModal() {
+            document.getElementById("filterModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("filterModal").style.display = "none";
+            return true;
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById("filterModal");
+            if (event.target == modal) {
+                closeModal();
+            }
+        };
+    </script>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Group Name</th>
+                <th>User Count</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for group in groups %}
+            <tr>
+                <td>{{ group.groupname }}</td>
+                <td>{{ group.user_count }}</td>
+                <td>
+                    <a href="{{ url_for('main_page.group_users', server_name=server_name, group_id=group.id) }}">
+                        <button>View Users</button>
+                    </a>
+                    <a href="{{ url_for('main_page.delete_group', server_name=server_name, group_id=group.id) }}">
+                        <button>Delete Group</button>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
