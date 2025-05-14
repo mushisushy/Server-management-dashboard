@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -39,20 +39,20 @@ repos:
         exclude: ^docs/
 
   - repo: https://github.com/pylint-dev/pylint
-    rev: v3.2.2
+    rev: v3.3.7
     hooks:
       - id: pylint
         args: [--rcfile=.pylintrc]
         exclude: ^tests/|^migrations/
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.9.0
+    rev: v1.15.0
     hooks:
       - id: mypy
         additional_dependencies: [types-requests]
 
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.7
+    rev: 1.8.3
     hooks:
       - id: bandit
         args: ["-ll", "--skip", "B101"]
