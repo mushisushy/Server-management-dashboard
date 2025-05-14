@@ -179,7 +179,6 @@ def toggle_docker(user_id):
     return {"message": "Docker status updated", "docker": user.docker}, 200
 
 
-
 @main_page.route("/change_password/<int:user_id>", methods=["POST"])
 def change_password(user_id):
     new_password = request.form.get("new_password")
