@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -11,33 +11,25 @@ repos:
       - id: debug-statements
       - id: detect-private-key
 
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.13.2
-    hooks:
-      - id: isort
-        name: isort (python)
-        args: [--profile=black]
-
   - repo: https://github.com/psf/black
-    rev: 23.12.1
+    rev: 25.1.0
     hooks:
       - id: black
-        language_version: python3
 
-  - repo: https://github.com/PyCQA/docformatter
-    rev: v1.7.5
+  - repo: https://github.com/PyCQA/isort
+    rev: 6.0.1
     hooks:
-      - id: docformatter
-        args: [--in-place, --wrap-summaries=88, --wrap-descriptions=88]
+      - id: isort
+        args: [--profile=black]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.7
+    rev: v0.11.9
     hooks:
       - id: ruff
-        args: [--fix, --show-fixes]
-        additional_dependencies: [ruff==0.1.7]
+        args: [--fix, --show-fixes, --ignore=E501,W503]
 
-  - repo: https://github.com/pycqa/flake8
-    rev: 7.0.0
+  - repo: https://github.com/PyCQA/docformatter
+    rev: v1.7.7
     hooks:
-      - id: flake8
+      - id: docformatter
+        args: [--in-place, --wrap-summaries=88, --wrap-descriptions=88, --pre-summary-newline]
