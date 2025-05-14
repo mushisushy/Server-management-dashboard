@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v4.5.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -15,21 +15,44 @@ repos:
     rev: 25.1.0
     hooks:
       - id: black
+        args: [--line-length=88]
 
   - repo: https://github.com/PyCQA/isort
     rev: 6.0.1
     hooks:
       - id: isort
-        args: [--profile=black]
+        args: [--profile=black, --line-length=88]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.11.9
     hooks:
       - id: ruff
-        args: [--fix, --show-fixes, --ignore=E501,W503]
+        args: [--fix, --show-fixes]
+        additional_dependencies: [ruff==0.1.9]
+        exclude: ^tests/|^migrations/
 
   - repo: https://github.com/PyCQA/docformatter
     rev: v1.7.7
     hooks:
       - id: docformatter
         args: [--in-place, --wrap-summaries=88, --wrap-descriptions=88, --pre-summary-newline]
+        exclude: ^docs/
+
+  - repo: https://github.com/pylint-dev/pylint
+    rev: v3.2.2
+    hooks:
+      - id: pylint
+        args: [--rcfile=.pylintrc]
+        exclude: ^tests/|^migrations/
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.9.0
+    hooks:
+      - id: mypy
+        additional_dependencies: [types-requests]
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.7
+    hooks:
+      - id: bandit
+        args: ["-ll", "--skip", "B101"]
