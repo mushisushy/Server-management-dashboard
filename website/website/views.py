@@ -40,7 +40,7 @@ def list_groups(server_name):
 def signup(server_name):
     if request.method == "POST":
         username = request.form.get("name")
-       # password = request.form.get("password")
+        # password = request.form.get("password")
         group_name = request.form.get("group")
         sudo = bool(request.form.get("sudo"))
         docker = bool(request.form.get("docker"))
