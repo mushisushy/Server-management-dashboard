@@ -2,8 +2,8 @@ import datetime
 
 from flask import Blueprint, render_template, url_for, redirect, request, jsonify
 
-from . import db
-from .models import get_servers, get_users, get_groups, delete_user, update_expiration, add_group_to_server, User, \
+from website.website import db
+from website.website.models import get_servers, get_users, get_groups, delete_user, update_expiration, add_group_to_server, User, \
     Server, Group
 
 

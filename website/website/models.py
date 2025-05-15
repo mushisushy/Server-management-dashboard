@@ -1,4 +1,4 @@
-from . import db
+from website.website import db
 
 class Server(db.Model):
     id = db.Column(db.Integer, primary_key=True)
