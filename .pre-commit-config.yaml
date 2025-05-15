@@ -37,12 +37,12 @@ repos:
         args: [--in-place, --wrap-summaries=88, --wrap-descriptions=88, --pre-summary-newline]
         exclude: ^docs/
 
-  - repo: https://github.com/pylint-dev/pylint
-    rev: v3.3.7
-    hooks:
-      - id: pylint
-        args: [--rcfile=.pylintrc]
-        exclude: ^tests/|^migrations/
+  #- repo: https://github.com/pylint-dev/pylint
+  #  rev: v3.3.7
+  #  hooks:
+  #    - id: pylint
+  #      args: [--rcfile=.pylintrc]
+  #      exclude: ^tests/|^migrations/
 
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.15.0

@@ -34,4 +34,3 @@ spec:
           ports:
             - name: http
               containerPort: 5000
-
