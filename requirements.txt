@@ -13,3 +13,9 @@ Werkzeug
 pymysql
 cryptography
 pre-commit
+pytest-cov
+pytest
+docformatter
+ruff
+isort
+black
